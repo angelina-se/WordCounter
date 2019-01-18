@@ -13,7 +13,6 @@ class WordsCountModel {
     
     func getDictOfWordsAndCounts() -> Observable<[String : Int]> {
         return Observable<[String : Int]>.create( {(observer) -> Disposable in
-            print("thread observable 1 -> \(Thread.current)")
             let words = MakeStringFromText.transformTextToString()
             let dictOfWordsAndCounts = WordCounter.calculateWordsCountInText(text: words)
             

@@ -20,14 +20,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.layer.cornerRadius = 10
-        textProcessed()
+        makeBinding()
     }
     
     override func viewDidAppear(_ animated: Bool) {
 //        WaitManager.addSpinner(controller: self)
     }
     
-    func textProcessed() {
+    func makeBinding() {
         model.getDictOfWordsAndCounts().bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: ListOfWordsCell.self)) {
             row, dictOfWordsAndCounts, cell in
             

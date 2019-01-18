@@ -12,7 +12,6 @@ import RxCocoa
 
 class PrimeNumbersViewController: UIViewController {
    
-    var wordsAndPrimeCounts: Dictionary<String, Int> = [:]
     var primeModel = PrimeWordsCountModel()
     let disposeBag = DisposeBag()
     
@@ -22,14 +21,14 @@ class PrimeNumbersViewController: UIViewController {
         super.viewDidLoad()
         primeTableView.layer.cornerRadius = 10
         
-        textProcessed()
+        makeBinding()
     }
     
     override func viewDidAppear(_ animated: Bool) {
 //        WaitManager.addSpinner(controller: self)
     }
     
-    func textProcessed() {
+    func makeBinding() {
         primeModel.getDictOfWordsWithPrimeCounts().bind(to: primeTableView.rx.items(cellIdentifier: "CellPrime", cellType: WordsAndPrimeNumbersTableViewCell.self)) {
             row, wordsAndPrimeCounts, cell in
             
