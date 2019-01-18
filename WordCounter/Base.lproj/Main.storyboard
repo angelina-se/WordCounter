@@ -61,10 +61,6 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="saC-tf-jWJ"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Qiv-jd-890"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.71694495897504973" green="0.73189222535867315" blue="0.78166640228426398" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -138,10 +134,6 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="31I-3Y-X6v" id="9sv-dd-m44"/>
-                                    <outlet property="delegate" destination="31I-3Y-X6v" id="51v-Bx-yRR"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.71758580207824707" green="0.73248708248138428" blue="0.78205448389053345" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -170,6 +162,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="9u8-gn-xEa" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="YMc-WD-LG8">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>

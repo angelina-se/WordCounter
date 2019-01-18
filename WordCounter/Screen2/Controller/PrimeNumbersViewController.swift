@@ -7,51 +7,37 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
-class PrimeNumbersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TextProcessingDelegate {
+class PrimeNumbersViewController: UIViewController {
    
     var wordsAndPrimeCounts: Dictionary<String, Int> = [:]
     var primeModel = PrimeWordsCountModel()
+    let disposeBag = DisposeBag()
+    
     @IBOutlet weak var primeTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         primeTableView.layer.cornerRadius = 10
-        
-        primeModel.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         WaitManager.addSpinner(controller: self)
-        primeModel.getDictOfWordsWithPrimeCounts()
+        primeTableView.dataSource = nil
+        primeTableView.delegate = nil
+        textProcessed()
     }
     
-    func textProcessed(textDictionary: Dictionary<String, Int>) {
-        wordsAndPrimeCounts = textDictionary
-        primeTableView.reloadData()
-        
+    func textProcessed() {
+        primeModel.getDictOfWordsWithPrimeCounts().bind(to: primeTableView.rx.items(cellIdentifier: "CellPrime", cellType: WordsAndPrimeNumbersTableViewCell.self)) {
+            row, wordsAndPrimeCounts, cell in
+            
+            cell.countLabel.text = "\(wordsAndPrimeCounts.value)"
+            cell.wordLabel.text = "\(wordsAndPrimeCounts.key)"
+            } .disposed(by: disposeBag)
         WaitManager.dismissSpinner(controller: self)
     }
-
-    //MARK: TableView methods
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "2nd part"
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return wordsAndPrimeCounts.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CellPrime", for: indexPath) as? WordsAndPrimeNumbersTableViewCell else { return UITableViewCell()}
-        
-        cell.wordLabel.text = "\(Array(wordsAndPrimeCounts.keys)[indexPath.row])"
-        cell.countLabel.text = "\(Array(wordsAndPrimeCounts.values)[indexPath.row])"
-        
-        return cell
-    }
 }
