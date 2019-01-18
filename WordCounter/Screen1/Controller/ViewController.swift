@@ -20,13 +20,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.layer.cornerRadius = 10
+        textProcessed()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        WaitManager.addSpinner(controller: self)
-        tableView.dataSource = nil
-        tableView.delegate = nil
-        textProcessed()
+//        WaitManager.addSpinner(controller: self)
     }
     
     func textProcessed() {

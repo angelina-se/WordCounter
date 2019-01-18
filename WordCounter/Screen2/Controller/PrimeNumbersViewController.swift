@@ -21,13 +21,12 @@ class PrimeNumbersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         primeTableView.layer.cornerRadius = 10
+        
+        textProcessed()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        WaitManager.addSpinner(controller: self)
-        primeTableView.dataSource = nil
-        primeTableView.delegate = nil
-        textProcessed()
+//        WaitManager.addSpinner(controller: self)
     }
     
     func textProcessed() {
