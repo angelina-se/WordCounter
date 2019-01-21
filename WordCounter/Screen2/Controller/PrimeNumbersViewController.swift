@@ -26,7 +26,7 @@ class PrimeNumbersViewController: UIViewController {
     }
     
     func makeBinding() {
-        let countsResult = primeModel.getDictOfWordsWithPrimeCounts()
+        let countsResult = primeModel.getDictOfWordsWithPrimeCounts().share()
             
         countsResult
             .bind(to: primeTableView.rx.items(cellIdentifier: "CellPrime", cellType: WordsAndPrimeNumbersTableViewCell.self)) {

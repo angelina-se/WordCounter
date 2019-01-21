@@ -21,15 +21,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         tableView.layer.cornerRadius = 10
         
+        WaitManager.addSpinner(controller: self)
         makeBinding()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        WaitManager.addSpinner(controller: self)
-    }
-    
     func makeBinding() {
-        let countsResult = model.getDictOfWordsAndCounts()
+        let countsResult = model.getDictOfWordsAndCounts().share()
         
         countsResult.bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: ListOfWordsCell.self)) {
             row, dictOfWordsAndCounts, cell in
