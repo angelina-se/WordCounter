@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7E7B1CD956134D546856AD37 /* Pods_WordCounter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1089279684BD359D3EBB5E5A /* Pods_WordCounter.framework */; };
+		6FC0618F07A3FF7F3C82E594 /* Pods_WordCounter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1089279684BD359D3EBB5E5A /* Pods_WordCounter.framework */; };
 		917A9E5721EB59D5005CF6A3 /* WaitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917A9E5621EB59D5005CF6A3 /* WaitManager.swift */; };
 		917A9E5B21EB66A2005CF6A3 /* WordsAndPrimeNumbersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917A9E5A21EB66A2005CF6A3 /* WordsAndPrimeNumbersTableViewCell.swift */; };
 		917A9E6021EB6A7D005CF6A3 /* PrimeWordsCountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917A9E5F21EB6A7D005CF6A3 /* PrimeWordsCountModel.swift */; };
@@ -71,7 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E7B1CD956134D546856AD37 /* Pods_WordCounter.framework in Frameworks */,
+				6FC0618F07A3FF7F3C82E594 /* Pods_WordCounter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,7 +418,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${SRCROOT}/Podfile.lock\" \"${SRCROOT}/Pods/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

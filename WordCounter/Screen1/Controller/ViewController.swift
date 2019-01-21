@@ -20,21 +20,30 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.layer.cornerRadius = 10
+        
         makeBinding()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-//        WaitManager.addSpinner(controller: self)
+        WaitManager.addSpinner(controller: self)
     }
     
     func makeBinding() {
-        model.getDictOfWordsAndCounts().bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: ListOfWordsCell.self)) {
+        let countsResult = model.getDictOfWordsAndCounts()
+        
+        countsResult.bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: ListOfWordsCell.self)) {
             row, dictOfWordsAndCounts, cell in
             
             cell.countLabel.text = "\(dictOfWordsAndCounts.value)"
             cell.wordLabel.text = "\(dictOfWordsAndCounts.key)"
-            } .disposed(by: disposeBag)
+            }
+            .disposed(by: disposeBag)
         
-        WaitManager.dismissSpinner(controller: self)
+        countsResult
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { _ in
+                WaitManager.dismissSpinner(controller: self)
+            })
+            .disposed(by: disposeBag)
     }
 }

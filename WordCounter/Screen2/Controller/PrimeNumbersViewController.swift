@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 class PrimeNumbersViewController: UIViewController {
-   
+    
     var primeModel = PrimeWordsCountModel()
     let disposeBag = DisposeBag()
     
@@ -21,21 +21,26 @@ class PrimeNumbersViewController: UIViewController {
         super.viewDidLoad()
         primeTableView.layer.cornerRadius = 10
         
+        WaitManager.addSpinner(controller: self)
         makeBinding()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-//        WaitManager.addSpinner(controller: self)
-    }
-    
     func makeBinding() {
-        primeModel.getDictOfWordsWithPrimeCounts().bind(to: primeTableView.rx.items(cellIdentifier: "CellPrime", cellType: WordsAndPrimeNumbersTableViewCell.self)) {
-            row, wordsAndPrimeCounts, cell in
+        let countsResult = primeModel.getDictOfWordsWithPrimeCounts()
             
-            cell.countLabel.text = "\(wordsAndPrimeCounts.value)"
-            cell.wordLabel.text = "\(wordsAndPrimeCounts.key)"
-            } .disposed(by: disposeBag)
-        WaitManager.dismissSpinner(controller: self)
+        countsResult
+            .bind(to: primeTableView.rx.items(cellIdentifier: "CellPrime", cellType: WordsAndPrimeNumbersTableViewCell.self)) {
+                row, wordsAndPrimeCounts, cell in
+                
+                cell.countLabel.text = "\(wordsAndPrimeCounts.value)"
+                cell.wordLabel.text = "\(wordsAndPrimeCounts.key)"
+            }.disposed(by: disposeBag)
+        
+        countsResult
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { _ in
+                WaitManager.dismissSpinner(controller: self)
+            })
+            .disposed(by: disposeBag)
     }
-    
 }
