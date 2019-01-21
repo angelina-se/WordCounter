@@ -7,21 +7,18 @@
 //
 
 import Foundation
+import RxSwift
 
 class WordsCountModel {
     
-    var delegate: TextProcessingDelegate?
-    
-    func getDictOfWordsAndCounts() {
-        //backgroud
-        DispatchQueue.global(qos: .background).async {
+    func getDictOfWordsAndCounts() -> Observable<[String : Int]> {
+        return Observable<[String : Int]>.create( {(observer) -> Disposable in
             let words = MakeStringFromText.transformTextToString()
             let dictOfWordsAndCounts = WordCounter.calculateWordsCountInText(text: words)
             
-            //ui
-            DispatchQueue.main.async {
-                self.delegate?.textProcessed(textDictionary: dictOfWordsAndCounts)
-            }
-        }
+            observer.onNext(dictOfWordsAndCounts)
+            
+            return Disposables.create()
+        }).subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
     }
 }

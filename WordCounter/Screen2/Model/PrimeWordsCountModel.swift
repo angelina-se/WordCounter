@@ -7,21 +7,17 @@
 //
 
 import Foundation
+import RxSwift
 
 class PrimeWordsCountModel {
     
-    var delegate: TextProcessingDelegate?
-    
-    func getDictOfWordsWithPrimeCounts() {
-        //backgroud
-        DispatchQueue.global(qos: .background).async {
+    func getDictOfWordsWithPrimeCounts() -> Observable<[String : Int]> {
+        return Observable<[String : Int]>.create({ (observer) -> Disposable in
             let dictOfWordsAndCounts = WordCounter.calculateWordsCountInText(text: MakeStringFromText.transformTextToString())
             let dictOfWordsWithPrimeCounts = PrimeWordsCountsInText.getPrimeCounts(dictOfWordsAndCounts: dictOfWordsAndCounts)
             
-            //ui
-            DispatchQueue.main.async {
-                self.delegate?.textProcessed(textDictionary: dictOfWordsWithPrimeCounts)
-            }
-        }
+            observer.onNext(dictOfWordsWithPrimeCounts)
+            return Disposables.create()
+        }).subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
     }
 }

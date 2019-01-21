@@ -6,53 +6,41 @@
 //  Copyright © 2019 anhelina.mamekhina. All rights reserved.
 //
 
-import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TextProcessingDelegate {
+class ViewController: UIViewController {
     
-    var wordsCount: Dictionary<String, Int> = [:]
     let model = WordsCountModel()
+    let disposeBag = DisposeBag()
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.layer.cornerRadius = 10
         
-        model.delegate = self
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
         WaitManager.addSpinner(controller: self)
-        model.getDictOfWordsAndCounts()
+        makeBinding()
     }
     
-    func textProcessed(textDictionary: Dictionary<String, Int>) {
-        wordsCount = textDictionary
-        tableView.reloadData()
+    func makeBinding() {
+        let countsResult = model.getDictOfWordsAndCounts().share()
         
-        WaitManager.dismissSpinner(controller: self)
-    }
-    
-    // MARK: TableView methods
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "1st part"
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return wordsCount.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ListOfWordsCell else { return UITableViewCell()}
+        countsResult.bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: ListOfWordsCell.self)) {
+            row, dictOfWordsAndCounts, cell in
+            
+            cell.countLabel.text = "\(dictOfWordsAndCounts.value)"
+            cell.wordLabel.text = "\(dictOfWordsAndCounts.key)"
+            }
+            .disposed(by: disposeBag)
         
-        cell.wordLabel.text = "\(Array(wordsCount.keys)[indexPath.row])"
-        cell.countLabel.text = "\(Array(wordsCount.values)[indexPath.row])"
-    
-        return cell
+        countsResult
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { _ in
+                WaitManager.dismissSpinner(controller: self)
+            })
+            .disposed(by: disposeBag)
     }
 }
